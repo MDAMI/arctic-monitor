@@ -54,9 +54,9 @@ public class ArcticClient implements Runnable, AutoCloseable {
         try {
             monitoredDirectory.register(watchService, ENTRY_CREATE);
         } catch (NotDirectoryException e){
-            throw new IllegalArgumentException(String.format("The provided path %s is not a directory"), e);
+            throw new IllegalArgumentException(String.format("The provided path %s is not a directory", monitoredDirectory), e);
         } catch (NoSuchFileException e){
-            throw new IllegalArgumentException(String.format("Directory %s does not exist. Monitor can not be registered"), e);
+            throw new IllegalArgumentException(String.format("Directory %s does not exist. Monitor can not be registered", monitoredDirectory), e);
         } catch (IOException e) {
             throw new IllegalStateException("An error occurred while registering the watchService", e);
         }

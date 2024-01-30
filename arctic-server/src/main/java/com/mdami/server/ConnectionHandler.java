@@ -46,7 +46,7 @@ public class ConnectionHandler implements Runnable, AutoCloseable {
             File newFile = resolvedPath.toFile();
             if (newFile.exists() && !existingFileStrategy.equals(ExistingFileStrategies.OVERWRITE)){
                 if (existingFileStrategy == ExistingFileStrategies.RENAME){
-                    String currentTime = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("YYYY-MM-DD-AAAAAAAA"));
+                    String currentTime = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-AAAAAAAA"));
                     int lastPeriod = fileName.lastIndexOf(".");
                     String newFileName = fileName.substring(0,lastPeriod) + currentTime + fileName.substring(lastPeriod);
                     writeToFile(properties, storageDirectory.resolve(newFileName).toFile());

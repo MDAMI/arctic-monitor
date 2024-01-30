@@ -1,12 +1,10 @@
 package com.mdami.server;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,23 +16,28 @@ public class ArcticServerTest {
 
     @Before
     public void setup() {
-        String configFilePath = getClass().getClassLoader().getResource("serverConfig.properties").getPath();
-        int windowsFile = configFilePath.indexOf(':');
-        if (windowsFile != -1) {
-            configFilePath = configFilePath.substring(windowsFile+1);
-        }
+        String configFilePath;
+        try{
+            configFilePath = getClass().getClassLoader().getResource("serverConfig.properties").getPath();
+            int windowsFile = configFilePath.indexOf(':');
+            if (windowsFile != -1) {
+                configFilePath = configFilePath.substring(windowsFile+1);
+            }
 
-        try {
-            arcticServer = new ArcticServer(configFilePath);
-            ExecutorService service = Executors.newSingleThreadExecutor();
-            service.submit(arcticServer);
-        } catch (IOException e){
-            fail("Could not set up server");
+            try {
+                arcticServer = new ArcticServer(configFilePath);
+                ExecutorService service = Executors.newSingleThreadExecutor();
+                service.submit(arcticServer);
+            } catch (IOException e){
+                fail("Could not set up server");
+            }
+        } catch (NullPointerException e){
+            fail("Config file can not be found");
         }
     }
 
     @Test
-    public void shouldHandleMultipleClients() throws IOException {
+    public void shouldHandleMultipleClients() {
         try {
             Socket socket1 = new Socket("127.0.0.1", 4633);
             Socket socket2 = new Socket("127.0.0.1", 4633);

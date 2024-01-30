@@ -1,10 +1,7 @@
 package com.mdami.server;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -19,7 +16,6 @@ import java.util.concurrent.Executors;
 
 public class ArcticServer implements Runnable, AutoCloseable{
     private final Path storageDirectory;
-    private final int serverPort;
     private final ExistingFileStrategies existingFileStrategy;
     private final List<ConnectionHandler> connectionHandlers;
     private final ExecutorService executorService;
@@ -40,7 +36,7 @@ public class ArcticServer implements Runnable, AutoCloseable{
         }
 
         storageDirectory = Paths.get(config.getProperty("storageDirectory"));
-        serverPort = config.getProperty("serverPort") != null ? Integer.parseInt(config.getProperty("serverPort")) : 80;
+        int serverPort = config.getProperty("serverPort") != null ? Integer.parseInt(config.getProperty("serverPort")) : 80;
         existingFileStrategy = config.getProperty("existingFileStrategy") != null ?
                 ExistingFileStrategies.valueOf(config.getProperty("existingFileStrategy")) : ExistingFileStrategies.IGNORE;
 
